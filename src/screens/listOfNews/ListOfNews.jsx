@@ -1,27 +1,43 @@
-import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Layout, List, ListItem, Text} from '@ui-kitten/components';
+import {Icon, Layout, List, ListItem, Text} from '@ui-kitten/components';
 import {Card} from '@ui-kitten/components';
 import {Button} from '@ui-kitten/components';
-import image1 from '../../../assets/images/good-good-good-wyN0QFDiXw0-unsplash.jpg';
 import {Image} from 'react-native';
 import styles from './styles';
 import axios from 'axios';
+import Loading from '../spinner/Spinner ';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {addToFavorite} from '../../store/FavoriteSlice';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Toast from 'react-native-toast-message';
 
 const ListOfNews = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const getAllData = async () => {
     const {data} = await axios(
-      'http://api.mediastack.com/v1/news?access_key=f37d82f2872d3f49a22f9e89724bb2b5&countries=eg&languages=ar',
+        'https://gnews.io/api/v4/top-headlines?category=general&lang=ar&max=10&apikey=68fbfdf0558ae5f8f262097231f7920a',
     );
-
-    setNews(data.data);
+    setNews(data.articles);
   };
   useEffect(() => {
     getAllData();
-    console.log(news);
   }, []);
-
+  const goToDetails = item => {
+    navigation.navigate('details', {item});
+  };
+  const pressHandler = item => {
+    dispatch( addToFavorite({
+    ...item,
+    id: item.title + item.publishedAt
+  }));
+    Toast.show({
+      type: 'success',
+      text1: 'Added to favorite',
+    });
+  };
   const renderItem = ({item}) => (
     <ListItem
       style={styles.listStyle}
@@ -31,20 +47,34 @@ const ListOfNews = () => {
           {item?.description}
         </Text>
       )}
+      accessoryLeft={() => (
+        <AntDesign
+          name="heart"
+          size={28}
+          color="rgb(255, 23, 68)"
+          style={styles.icon}
+          onPress={() => pressHandler(item)}
+        />
+      )}
       accessoryRight={() => (
         <Image source={{uri: item?.image}} style={styles.image} />
       )}
+      onPress={() => goToDetails(item)}
     />
   );
-  return (
-    <>
+  return news.length > 0 ? (
+    <Layout style={styles.container}>
       <List
+        scrollEnabled={false}
         showsVerticalScrollIndicator={false}
         data={news}
         renderItem={renderItem}
-        keyExtractor={item => item?.id}
+        keyExtractor={(item, index) => index}
       />
-    </>
+    </Layout>
+  ) : (
+    <Loading />
   );
 };
+
 export default ListOfNews;

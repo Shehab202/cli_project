@@ -1,16 +1,21 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from 'react-native';
 
-const styles=StyleSheet.create({
-    container:{
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"center",
-        marginBottom:10,
-        padding:8
-    },
-    img:{width: 50, height: 50, borderRadius: 100},title:{
-        textTransform:"uppercase",
-    }
-})
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    // marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 13,
+    margin: 0,
+    // height: 150,
+    // backgroundColor: 'rgb(3, 7, 18)',
+  },
+  img: {width: 40, height: 40, borderRadius: 100},
+  title: {
+    textTransform: 'uppercase',
+  },
+});
 
-export default styles
+export default styles;

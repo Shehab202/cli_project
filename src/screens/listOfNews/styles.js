@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+ 
   image: {
-    width: 100,
-    height: 200,
+    width: "30%",
+    height: "80%",
     borderRadius: 8,
     marginLeft: 10,
     resizeMode: 'contain',
@@ -15,8 +16,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'gray',
-    padding: 18,
+    padding: 18
   
-  },
+  },icon:{
+    padding:10
+  }
 });
 export default styles;
